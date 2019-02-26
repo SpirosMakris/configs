@@ -1,4 +1,4 @@
-# Shamelessly stolen from https://github.com/jonhoo/configs/blob/master/editor/.config/nvim/init.vim
+" Shamelessly stolen from https://github.com/jonhoo/configs/blob/master/editor/.config/nvim/init.vim
 
 let mapleader = "\<Space>"
 
@@ -43,8 +43,23 @@ Plug 'dag/vim-fish'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
+Plug 'Soares/base16.nvim'
+
 
 call plug#end()
+
+if has('nvim')
+    set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+    set inccommand=nosplit
+    noremap <C-q> :confirm qall<CR>
+end
+
+if !has('gui_running')
+  set t_Co=256
+endif
+
+" Base16
+let base16colorspace=256
 
 " Lightline
 " let g:lightline = { 'colorscheme': 'wombat' }
@@ -154,13 +169,17 @@ set number " Also show current absolute line
 set diffopt+=iwhite " No whitespace in vimdiff
 " Make diffing better: https://vimways.org/2018/the-power-of-diff/
 "set diffopt+=algorithm:patience
-"set diffopt+=indent-heuristic
+" set diffopt+=indent-heuristic
 set colorcolumn=80 " and give me a colored column
 set showcmd " Show (partial) command in status line.
 set mouse=a " Enable mouse usage (all modes) in terminals
 set shortmess+=c " don't give |ins-completion-menu| messages.
-
-
+0
+" Colors
+"let g:base16_transparent_background = 1
+set background=dark
+"colorscheme atelier-dune
+hi Normal ctermbg=NONE
 
 " =============================================================================
 " # Keyboard shortcuts
