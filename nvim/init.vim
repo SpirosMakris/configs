@@ -1,4 +1,4 @@
- Shamelessly stolen from https://github.com/jonhoo/configs/blob/master/editor/.config/nvim/init.vim
+" Shamelessly stolen from https://github.com/jonhoo/configs/blob/master/editor/.config/nvim/init.vim
 
 let mapleader = "\<Space>"
 
@@ -57,28 +57,38 @@ end
 
 if !has('gui_running')
   set t_Co=256
-"  set guifont="Noto Sans Mono:h13"
 endif
 
 " set font
 " https://github.com/equalsraf/neovim-qt/issues/213#issuecomment-266204953
 " https://stackoverflow.com/questions/35285300/how-to-change-neovim-font/51424640#51424640
 " https://www.reddit.com/r/neovim/comments/9n7sja/liga_source_code_pro_is_not_a_fixed_pitch_font/
-let s:fontsize = 11
 
-"GuiFont! Noto Sans Mono:h13
-execute "GuiFont! Noto Sans Mono:h" . s:fontsize
+" if has('gui_running')
+"   let s:fontsize = 12
+"   " GuiFont! Noto Sans Mono:h13
+"   :execute "GuiFont! Noto Sans Mono:h" . s:fontsize
 
-function! AdjustFontSize(amount)
-  let s:fontsize = s:fontsize+a:amount
-  ":execute "GuiFont! Consolas:h" . s:fontsize
-  :execute "GuiFont! Noto Sans Mono:h" . s:fontsize
-endfunction
+"   function! AdjustFontSize(amount)
+"     let s:fontsize = s:fontsize+a:amount
+"     ":execute "GuiFont! Consolas:h" . s:fontsize
+"     :execute "GuiFont! Noto Sans Mono:h" . s:fontsize
+"   endfunction
 
-noremap <C-ScrollWheelUp> :call AdjustFontSize(1)<CR>
-noremap <C-ScrollWheelDown> :call AdjustFontSize(-1)<CR>
-inoremap <C-ScrollWheelUp> <Esc>:call AdjustFontSize(1)<CR>a
-inoremap <C-ScrollWheelDown> <Esc>:call AdjustFontSize(-1)<CR>a
+"   " " Use mouse scroll wheel to change font size
+"   noremap <C-ScrollWheelUp> :call AdjustFontSize(1)<CR>
+"   noremap <C-ScrollWheelDown> :call AdjustFontSize(-1)<CR>
+"   inoremap <C-ScrollWheelUp> <Esc>:call AdjustFontSize(1)<CR>a
+"   inoremap <C-ScrollWheelDown> <Esc>:call AdjustFontSize(-1)<CR>a
+
+"   " " In normal mode, pressing numpad's+ increases the font
+"   noremap <kPlus> :call AdjustFontSize(1)<CR>
+"   noremap <kMinus> :call AdjustFontSize(-1)<CR>
+
+"   " " In insert mode, pressing ctrl + numpad's+ increases the font
+"   inoremap <C-kPlus> <Esc>:call AdjustFontSize(1)<CR>a
+"   inoremap <C-kMinus> <Esc>:call AdjustFontSize(-1)<CR>a
+" endif
 
 " Base16
 let base16colorspace=256
@@ -100,6 +110,54 @@ nmap <leader>; :Buffers<CR>
 
 " Quick-save
 nmap <leader>w :w<CR>
+
+
+" language server protocol
+" work around the lack of a global language client settings file:
+" https://github.com/rust-lang/rls/issues/1324
+" https://github.com/autozimu/LanguageClient-neovim/issues/431
+" I primarily want that for the ability to set `build_on_save`,
+" which I in turn want because of
+" https://github.com/autozimu/LanguageClient-neovim/issues/603
+"let g:LanguageClient_settingsPath = expand('$localappdata/nvim/settings.json')
+" let g:LanguageClient_serverCommands = {
+"     \ 'rust': ['env', 'CARGO_TARGET_DIR=/data/jon/cargo-target/rls', 'rls'],
+"     \ }
+" let g:LanguageClient_autoStart = 1
+" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+" don't make errors so painful to look at
+" let g:LanguageClient_diagnosticsDisplay = {
+"     \     1: {
+"     \         "name": "Error",
+"     \         "texthl": "ALEError",
+"     \         "signText": "✖",
+"     \         "signTexthl": "ErrorMsg",
+"     \         "virtualTexthl": "WarningMsg",
+"     \     },
+"     \     2: {
+"     \         "name": "Warning",
+"     \         "texthl": "ALEWarning",
+"     \         "signText": "⚠",
+"     \         "signTexthl": "ALEWarningSign",
+"     \         "virtualTexthl": "Todo",
+"     \     },
+"     \     3: {
+"     \         "name": "Information",
+"     \         "texthl": "ALEInfo",
+"     \         "signText": "ℹ",
+"     \         "signTexthl": "ALEInfoSign",
+"     \         "virtualTexthl": "Todo",
+"     \     },
+"     \     4: {
+"     \         "name": "Hint",
+"     \         "texthl": "ALEInfo",
+"     \         "signText": "➤",
+"     \         "signTexthl": "ALEInfoSign",
+"     \         "virtualTexthl": "Todo",
+"     \     },
+"     \ }
 
 " " Copy to clipboard
 vnoremap <leader>y "+y
