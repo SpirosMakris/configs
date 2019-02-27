@@ -48,8 +48,12 @@ Plug 'Soares/base16.nvim'
 
 call plug#end()
 
-" Use deoplete.
-" let g:deoplete#enable_at_startup = 1
+" Workspace Setup
+" ---------------
+function! DefaultWorkspace()
+    let numcol = 2
+endfunction
+
 
 if has('nvim')
     set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
@@ -171,7 +175,7 @@ filetype plugin indent on
 set autoindent
 set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 set encoding=utf-8
-set scrolloff=2
+set scrolloff=4
 set noshowmode
 set hidden
 set nowrap
@@ -281,3 +285,61 @@ vnoremap <C-c> <Esc>
 " Jump to start and end of line using the home row keys
 map H ^
 map L $
+
+" No arrow keys --- force yourself to use the home row
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
+
+
+" No arrow keys --- force yourself to use the home row
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
+" Left and right can switch buffers
+nnoremap <left> :bp<CR>
+nnoremap <right> :bn<CR>
+
+" Move by line
+nnoremap j gj
+nnoremap k gk
+
+" Jump to next/previous error
+nnoremap <C-j> :cnext<cr>
+nnoremap <C-k> :cprev<cr>
+nmap <silent> L <Plug>(ale_lint)
+"nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+"nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nnoremap <C-l> :copen<cr>
+nnoremap <C-g> :cclose<cr>
+
+" <leader><leader> toggles between buffers
+nnoremap <leader><leader> <c-^>
+
+" <leader>= reformats current tange
+nnoremap <leader>= :'<,'>RustFmtRange<cr>
+
+" <leader>, shows/hides hidden characters
+nnoremap <leader>, :set invlist<cr>
+
+" <leader>q shows stats
+nnoremap <leader>q g<c-g>
+
+" Keymap for replacing up to next _ or -
+noremap <leader>m ct_
+noremap <leader>n ct-
+
+" M to make
+noremap M :!make -k -j4<cr>
+
+" I can type :help on my own, thanks.
+map <F1> <Esc>
+imap <F1> <Esc>
