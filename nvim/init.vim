@@ -4,7 +4,7 @@ let mapleader = "\<Space>"
 
 " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
 call plug#begin('~/.vim/plugged')
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 " Initialize plugin system
 
@@ -25,7 +25,7 @@ Plug 'junegunn/fzf.vim'
 "Plug 'racer-rust/vim-racer'
 Plug 'autozimu/LanguageClient-neovim', {
     \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
+    \ 'do': 'powershell -executionpolicy bypass -File install.ps1',
     \ }
 Plug 'ncm2/ncm2'
 Plug 'roxma/nvim-yarp'
@@ -48,6 +48,9 @@ Plug 'Soares/base16.nvim'
 
 call plug#end()
 
+" Use deoplete.
+" let g:deoplete#enable_at_startup = 1
+
 if has('nvim')
     set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
     set inccommand=nosplit
@@ -58,37 +61,6 @@ end
 if !has('gui_running')
   set t_Co=256
 endif
-
-" set font
-" https://github.com/equalsraf/neovim-qt/issues/213#issuecomment-266204953
-" https://stackoverflow.com/questions/35285300/how-to-change-neovim-font/51424640#51424640
-" https://www.reddit.com/r/neovim/comments/9n7sja/liga_source_code_pro_is_not_a_fixed_pitch_font/
-
-" if has('gui_running')
-"   let s:fontsize = 12
-"   " GuiFont! Noto Sans Mono:h13
-"   :execute "GuiFont! Noto Sans Mono:h" . s:fontsize
-
-"   function! AdjustFontSize(amount)
-"     let s:fontsize = s:fontsize+a:amount
-"     ":execute "GuiFont! Consolas:h" . s:fontsize
-"     :execute "GuiFont! Noto Sans Mono:h" . s:fontsize
-"   endfunction
-
-"   " " Use mouse scroll wheel to change font size
-"   noremap <C-ScrollWheelUp> :call AdjustFontSize(1)<CR>
-"   noremap <C-ScrollWheelDown> :call AdjustFontSize(-1)<CR>
-"   inoremap <C-ScrollWheelUp> <Esc>:call AdjustFontSize(1)<CR>a
-"   inoremap <C-ScrollWheelDown> <Esc>:call AdjustFontSize(-1)<CR>a
-
-"   " " In normal mode, pressing numpad's+ increases the font
-"   noremap <kPlus> :call AdjustFontSize(1)<CR>
-"   noremap <kMinus> :call AdjustFontSize(-1)<CR>
-
-"   " " In insert mode, pressing ctrl + numpad's+ increases the font
-"   inoremap <C-kPlus> <Esc>:call AdjustFontSize(1)<CR>a
-"   inoremap <C-kMinus> <Esc>:call AdjustFontSize(-1)<CR>a
-" endif
 
 " Base16
 let base16colorspace=256
@@ -104,13 +76,16 @@ function! LightlineFilename()
   return expand('%:t') !=# '' ? @% : '[No Name]'
 endfunction
 
-" Open hotkeys
-map <C-p> :Files<CR>
-nmap <leader>; :Buffers<CR>
+" Linter
+" only lint on save
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_save = 0
+let g:ale_lint_on_enter = 0
+let g:ale_rust_cargo_use_check = 1
+let g:ale_rust_cargo_check_all_targets = 1
 
-" Quick-save
-nmap <leader>w :w<CR>
 
+let g:python3_host_prog='C:\Users\Spiros\AppData\Local\Programs\Python\Python37-32\python'
 
 " language server protocol
 " work around the lack of a global language client settings file:
@@ -119,46 +94,56 @@ nmap <leader>w :w<CR>
 " I primarily want that for the ability to set `build_on_save`,
 " which I in turn want because of
 " https://github.com/autozimu/LanguageClient-neovim/issues/603
-"let g:LanguageClient_settingsPath = expand('$localappdata/nvim/settings.json')
-" let g:LanguageClient_serverCommands = {
-"     \ 'rust': ['env', 'CARGO_TARGET_DIR=/data/jon/cargo-target/rls', 'rls'],
-"     \ }
-" let g:LanguageClient_autoStart = 1
-" nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-" don't make errors so painful to look at
-" let g:LanguageClient_diagnosticsDisplay = {
-"     \     1: {
-"     \         "name": "Error",
-"     \         "texthl": "ALEError",
-"     \         "signText": "✖",
-"     \         "signTexthl": "ErrorMsg",
-"     \         "virtualTexthl": "WarningMsg",
-"     \     },
-"     \     2: {
-"     \         "name": "Warning",
-"     \         "texthl": "ALEWarning",
-"     \         "signText": "⚠",
-"     \         "signTexthl": "ALEWarningSign",
-"     \         "virtualTexthl": "Todo",
-"     \     },
-"     \     3: {
-"     \         "name": "Information",
-"     \         "texthl": "ALEInfo",
-"     \         "signText": "ℹ",
-"     \         "signTexthl": "ALEInfoSign",
-"     \         "virtualTexthl": "Todo",
-"     \     },
-"     \     4: {
-"     \         "name": "Hint",
-"     \         "texthl": "ALEInfo",
-"     \         "signText": "➤",
-"     \         "signTexthl": "ALEInfoSign",
-"     \         "virtualTexthl": "Todo",
-"     \     },
-"     \ }
+" Required for operations modifying multiple buffers like rename.
+set hidden
 
+
+let g:LanguageClient_settingsPath = expand('$localappdata/nvim/settings.json')
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['$USERPROFILE/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ }
+let g:LanguageClient_autoStart = 1
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+" don't make errors so painful to look at
+let g:LanguageClient_diagnosticsDisplay = {
+    \     1: {
+    \         "name": "Error",
+    \         "texthl": "ALEError",
+    \         "signText": "✖",
+    \         "signTexthl": "ErrorMsg",
+    \         "virtualTexthl": "WarningMsg",
+    \     },
+    \     2: {
+    \         "name": "Warning",
+    \         "texthl": "ALEWarning",
+    \         "signText": "⚠",
+    \         "signTexthl": "ALEWarningSign",
+    \         "virtualTexthl": "Todo",
+    \     },
+    \     3: {
+    \         "name": "Information",
+    \         "texthl": "ALEInfo",
+    \         "signText": "ℹ",
+    \         "signTexthl": "ALEInfoSign",
+    \         "virtualTexthl": "Todo",
+    \     },
+    \     4: {
+    \         "name": "Hint",
+    \         "texthl": "ALEInfo",
+    \         "signText": "➤",
+    \         "signTexthl": "ALEInfoSign",
+    \         "virtualTexthl": "Todo",
+    \     },
+    \ }
+
+" Open hotkeys
+map <C-p> :Files<CR>
+nmap <leader>; :Buffers<CR>
+
+" Quick-save
+nmap <leader>w :w<CR>
 " " Copy to clipboard
 vnoremap <leader>y "+y
 nnoremap <leader>Y "+yg_
@@ -170,6 +155,14 @@ nnoremap <leader>p "+p
 nnoremap <leader>P "+P
 vnoremap <leader>p "+p
 vnoremap <leader>P "+P
+
+" Completion
+autocmd BufEnter * call ncm2#enable_for_buffer()
+set completeopt=noinsert,menuone,noselect
+" tab to select
+" and don't hijack my enter key
+inoremap <expr><Tab> (pumvisible()?(empty(v:completed_item)?"\<C-n>":"\<C-y>"):"\<Tab>")
+inoremap <expr><CR> (pumvisible()?(empty(v:completed_item)?"\<CR>\<CR>":"\<C-y>"):"\<CR>")
 
 " =============================================================================
 " # Editor settings

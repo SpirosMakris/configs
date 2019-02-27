@@ -1,3 +1,7 @@
+" set font
+" https://github.com/equalsraf/neovim-qt/issues/213#issuecomment-266204953
+" https://stackoverflow.com/questions/35285300/how-to-change-neovim-font/51424640#51424640
+" https://www.reddit.com/r/neovim/comments/9n7sja/liga_source_code_pro_is_not_a_fixed_pitch_font/
 let s:fontsize = 12
 " GuiFont! Noto Sans Mono:h13
 :execute "GuiFont! Noto Sans Mono:h" . s:fontsize
