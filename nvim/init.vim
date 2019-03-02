@@ -15,6 +15,9 @@ Plug 'itchyny/lightline.vim'
 Plug 'w0rp/ale'
 Plug 'machakann/vim-highlightedyank'
 
+" Commenting thingy
+Plug 'scrooloose/nerdcommenter'
+
 " Fuzzy finder
 Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -172,6 +175,7 @@ inoremap <expr><CR> (pumvisible()?(empty(v:completed_item)?"\<CR>\<CR>":"\<C-y>"
 " # Editor settings
 " =============================================================================
 filetype plugin indent on
+filetype plugin on
 set autoindent
 set timeoutlen=300 " http://stackoverflow.com/questions/2158516/delay-before-o-opens-a-new-line
 set encoding=utf-8
