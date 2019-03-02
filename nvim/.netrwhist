@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='C:/Users/Spiros'
+let g:netrw_dirhist_2='E:/SugarSyncSTUFF/PROJECTS/RUST/book_prj/hello_world'
+let g:netrw_dirhist_3='C:/Users/Spiros'
+let g:netrw_dirhist_4='E:/SugarSyncSTUFF/PROJECTS/RUST/by_example/ch19'
+let g:netrw_dirhist_5='E:/SugarSyncSTUFF/PROJECTS/RUST/amethyst/the_cave/src/components'
+let g:netrw_dirhist_6='E:/SugarSyncSTUFF/PROJECTS/RUST/amethyst/the_cave/src'
